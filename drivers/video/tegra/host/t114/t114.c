@@ -116,7 +116,7 @@ static struct platform_device tegra_host1x02_device = {
 		.platform_data = &t11_host1x_info,
 	},
 };
-
+// ace - video: tegra: host: Disable Powergate for T114 3d (Matt Wagner/Riham Haidar) commit 22f96e5a4485ccc995afe4d4f15a252a79d11684
 struct nvhost_device_data t11_gr3d_info = {
 	.version	= 3,
 	.index		= 1,
@@ -128,7 +128,7 @@ struct nvhost_device_data t11_gr3d_info = {
 			    {"emc", UINT_MAX, 75} },
 	.powergate_ids	= { TEGRA_POWERGATE_3D, -1 },
 	NVHOST_DEFAULT_CLOCKGATE_DELAY,
-	.can_powergate	= true,
+	.can_powergate	= false,
 	.powergate_delay = 250,
 	.powerup_reset	= true,
 	.moduleid	= NVHOST_MODULE_NONE,
