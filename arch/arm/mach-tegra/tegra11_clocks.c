@@ -6043,13 +6043,13 @@ static struct clk tegra_pll_x_out0 = {
 	.parent    = &tegra_pll_x,
 	.max_rate  = 700000000,
 };
-
+// ace - 3GHz o/c (coolbho3k/LoungeKatt) commit 36c951d7963bfafccc7a546ebdac4ab39020fbc2
 static struct clk tegra_dfll_cpu = {
 	.name      = "dfll_cpu",
 	.flags     = DFLL,
 	.ops       = &tegra_dfll_ops,
 	.reg	   = 0x2f4,
-	.max_rate  = 2000000000,
+	.max_rate  = 3000000000U,
 };
 
 static struct clk tegra_pll_re_vco = {
@@ -6327,14 +6327,14 @@ static struct clk_mux_sel mux_sclk[] = {
 	{ .input = &tegra_pll_m_out1,	.value = 7},
 	{ 0, 0},
 };
-
+// ace - 3GHz o/c (coolbho3k/LoungeKatt) commit 36c951d7963bfafccc7a546ebdac4ab39020fbc2
 static struct clk tegra_clk_cclk_g = {
 	.name	= "cclk_g",
 	.flags  = DIV_U71 | DIV_U71_INT | MUX,
 	.inputs	= mux_cclk_g,
 	.reg	= 0x368,
 	.ops	= &tegra_super_ops,
-	.max_rate = 2000000000,
+	.max_rate = 3000000000U,
 };
 
 static struct clk tegra_clk_cclk_lp = {
@@ -6354,12 +6354,12 @@ static struct clk tegra_clk_sclk = {
 	.max_rate = 384000000,
 	.min_rate = 12000000,
 };
-
+// ace - 3GHz o/c (coolbho3k/LoungeKatt) commit 36c951d7963bfafccc7a546ebdac4ab39020fbc2
 static struct clk tegra_clk_virtual_cpu_g = {
 	.name      = "cpu_g",
 	.parent    = &tegra_clk_cclk_g,
 	.ops       = &tegra_cpu_ops,
-	.max_rate  = 2000000000,
+	.max_rate  = 3000000000U,
 	.u.cpu = {
 		.main      = &tegra_pll_x,
 		.backup    = &tegra_pll_p_out4,
@@ -6385,12 +6385,12 @@ static struct clk_mux_sel mux_cpu_cmplx[] = {
 	{ .input = &tegra_clk_virtual_cpu_lp,	.value = 1},
 	{ 0, 0},
 };
-
+// ace - 3GHz o/c (coolbho3k/LoungeKatt) commit 36c951d7963bfafccc7a546ebdac4ab39020fbc2
 static struct clk tegra_clk_cpu_cmplx = {
 	.name      = "cpu",
 	.inputs    = mux_cpu_cmplx,
 	.ops       = &tegra_cpu_cmplx_ops,
-	.max_rate  = 2000000000,
+	.max_rate  = 3000000000U,
 };
 
 static struct clk tegra_clk_cop = {

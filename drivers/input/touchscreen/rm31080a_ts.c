@@ -99,9 +99,9 @@ enum RM_SLOW_SCAN_LEVELS {
 #define RM_WINTEK_7_CHANNEL_X 30
 
 #define TS_TIMER_PERIOD		HZ
-
-#define WDT_INIT_TIME		60//00 /* 60 sec */
-#define WDT_NORMAL_TIME		2//00 /* 1 sec */
+// ace - Input: touch: raydium: Update to Raydium v56.1 driver (Xiaohui Tao/Mandar Padmawar) commit e814ec48e8da73d71c59901918d41102fee4bb77
+#define WDT_INIT_TIME		6000 /* 60 sec */
+#define WDT_NORMAL_TIME		100  /* 1 sec */
 
 struct timer_list ts_timer_triggle;
 static void init_ts_timer(void);
@@ -734,10 +734,13 @@ static int rm_tch_cmd_process(u8 selCase, u8 *pCmdTbl, struct rm_tch_ts *ts)
 				ret = OK;
 				break;
 			case KRL_CMD_MSLEEP:
-				u16Tmp = (u16)(pCmdTbl[_DATA]|(pCmdTbl[_SUB_CMD]<<8));
+// ace - Input: touch: raydium: Update to Raydium v56.1 driver (Xiaohui Tao/Mandar Padmawar) commit e814ec48e8da73d71c59901918d41102fee4bb77
+//				u16Tmp = (u16)(pCmdTbl[_DATA]|(pCmdTbl[_SUB_CMD]<<8));
 				/*rm_printk("KRL_CMD_MSLEEP : %d ms\n",pCmdTbl[_DATA]);*/
 				/*rm_printk("KRL_CMD_MSLEEP : %d ms\n",u16Tmp);*/
-				msleep(u16Tmp);
+//				msleep(u16Tmp);
+				msleep(pCmdTbl[_DATA]);
+// ace - end commit
 				ret = OK;
 				break;
 			case KRL_CMD_FLUSH_QU:
@@ -1179,26 +1182,28 @@ static void rm_tch_init_ts_structure_part(void)
 /*==============================================================================*/
 static void rm_watchdog_enable(unsigned char u8Enable)
 {
-	static u8  u8IniBootFlg = 1;
-
+// ace - Input: touch: raydium: Update to Raydium v56.1 driver (Xiaohui Tao/Mandar Padmawar) commit e814ec48e8da73d71c59901918d41102fee4bb77
+//	static u8  u8IniBootFlg = 1;
 	g_stTs.u8WatchDogFlg = 0;
 	g_stTs.u32WatchDogCnt = 0;
 	g_stTs.u8WatchDogCheck=0;
 
 	if (u8Enable) {
 		g_stTs.u8WatchDogEnable = 1;
-		if (u8IniBootFlg) {
-			g_stTs.u32WatchDogTime = WDT_INIT_TIME; /*60sec*/
-			u8IniBootFlg = 0;
-		} else {
-			g_stTs.u32WatchDogTime = WDT_NORMAL_TIME; /*1 sec*/
-		}
+//		if (u8IniBootFlg) {
+//			g_stTs.u32WatchDogTime = WDT_INIT_TIME; /*60sec*/
+//			u8IniBootFlg = 0;
+//		} else {
+//			g_stTs.u32WatchDogTime = WDT_NORMAL_TIME; /*1 sec*/
+//		}
+		g_stTs.u32WatchDogTime = WDT_INIT_TIME; /* 60 sec*/
 	} else {
 		g_stTs.u8WatchDogEnable = 0;
 		g_stTs.u32WatchDogTime = 0xFFFFFFFF;
 	}
 	if ((g_stCtrl.bDebugMessage & DEBUG_DRIVER) == DEBUG_DRIVER)
-		rm_printk("Raydium TS: WatchDogEnable=%d,%d\n",g_stTs.u8WatchDogEnable,u8IniBootFlg);
+		rm_printk("Raydium TS: WatchDogEnable=%d\n",g_stTs.u8WatchDogEnable);
+//		rm_printk("Raydium TS: WatchDogEnable=%d,%d\n",g_stTs.u8WatchDogEnable,u8IniBootFlg);
 
 }
 
@@ -1207,7 +1212,8 @@ static void rm_watchdog_work_function(unsigned char scan_mode)
 	if ((g_stTs.u8WatchDogEnable==0)||(g_stTs.bInitFinish==0)) {
 		return;
 	}
-	if (g_stTs.u32WatchDogCnt++ >= g_stTs.u32WatchDogTime) {
+// ace - Input: touch: raydium: Update to Raydium v56.1 driver (Xiaohui Tao/Mandar Padmawar) commit e814ec48e8da73d71c59901918d41102fee4bb77
+	if (g_stTs.u32WatchDogCnt++ > g_stTs.u32WatchDogTime) {
 		if ((g_stCtrl.bDebugMessage & DEBUG_DRIVER) == DEBUG_DRIVER)
 			rm_printk("##watchdog work: Time:%dsec Cnt:%d,Flg:%d(%x)\n",g_stTs.u32WatchDogTime,g_stTs.u32WatchDogCnt,g_stTs.u8WatchDogFlg,g_stTs.u8ScanModeState);
 
@@ -2192,12 +2198,14 @@ static void init_ts_timer(void)
 	init_timer(&ts_timer_triggle);
 	ts_timer_triggle.function = ts_timer_triggle_function;
 	ts_timer_triggle.data = ((unsigned long) 0);
-	ts_timer_triggle.expires = jiffies + TS_TIMER_PERIOD;
+// ace - Input: touch: raydium: Update to Raydium v56.1 driver (Xiaohui Tao/Mandar Padmawar) commit e814ec48e8da73d71c59901918d41102fee4bb77
+	ts_timer_triggle.expires = jiffies + TS_TIMER_PERIOD;//msecs_to_jiffies(10);/*100*HZ;*/
 }
 static void ts_timer_triggle_function(unsigned long option)
 {
 	queue_work(g_stTs.rm_timer_workqueue, &g_stTs.rm_timer_work);
-	ts_timer_triggle.expires = jiffies + TS_TIMER_PERIOD;
+// ace - Input: touch: raydium: Update to Raydium v56.1 driver (Xiaohui Tao/Mandar Padmawar) commit e814ec48e8da73d71c59901918d41102fee4bb77
+	ts_timer_triggle.expires = jiffies + TS_TIMER_PERIOD;//msecs_to_jiffies(10);/*100*HZ;*/
 	add_timer(&ts_timer_triggle);
 }
 
