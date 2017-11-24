@@ -501,8 +501,8 @@ EXPORT_SYMBOL(clk_get_parent);
 int clk_set_rate_locked(struct clk *c, unsigned long rate)
 {
 	int ret = 0;
-	unsigned long old_rate, max_rate;
-	long new_rate;
+	unsigned long old_rate, max_rate, new_rate;
+//	long new_rate; // ace (coolbho3k/LoungeKatt) - fix bug preventing setting frequencies over ~2.147 GHz by making new_rate an unsigned long
 	bool disable = false;
 
 	if (!c->ops || !c->ops->set_rate)
