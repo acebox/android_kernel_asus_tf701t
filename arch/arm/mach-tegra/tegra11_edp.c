@@ -854,7 +854,9 @@ static struct tegra_edp_cpu_leakage_params t11x_leakage_params[] = {
 	},
 	{
 		.cpu_speedo_id	    = 2, /* A01P+ fast CPU */
-		.safety_cap = { 1912500, 1912500, 1912500, 1912500 },
+// ace - test, Raise safety caps in edp.c from commit (coolbho3k/LoungeKatt) d8481babfbe94d00f1a5c39672837bea2073e6fd
+//		.safety_cap = { 1912500, 1912500, 1912500, 1912500 },
+		.safety_cap = { 2958000, 2958000, 2958000, 2958000 },
 		.max_current_cap = { /* values are from tegra4 datasheet */
 			{ .max_cur = 9000, .max_temp = 90,
 				{ 1900000, 1900000, 1500000, 1500000 }
