@@ -139,7 +139,7 @@ static struct cpu_cvb_dvfs cpu_cvb_dvfs_table[] = {
 			.tune_high_min_millivolts = 1050,
 			.min_millivolts = 1000,
 		},
-		.max_mv = 1320,
+		.max_mv = 1350, /* 1320, */
 		.freqs_mult = KHZ,
 		.speedo_scale = 100,
 		.voltage_scale = 1000,
@@ -177,7 +177,7 @@ static struct cpu_cvb_dvfs cpu_cvb_dvfs_table[] = {
 			.tune_high_min_millivolts = 1050,
 			.min_millivolts = 1000,
 		},
-		.max_mv = 1320,
+		.max_mv = 1350, /* 1320, */
 		.freqs_mult = KHZ,
 		.speedo_scale = 100,
 		.voltage_scale = 1000,
@@ -215,7 +215,7 @@ static struct cpu_cvb_dvfs cpu_cvb_dvfs_table[] = {
 			.tune_high_min_millivolts = 1050,
 			.min_millivolts = 1000,
 		},
-		.max_mv = 1320,
+		.max_mv = 1450, /* 1320, */
 		.freqs_mult = KHZ,
 		.speedo_scale = 100,
 		.voltage_scale = 1000,
@@ -238,6 +238,7 @@ static struct cpu_cvb_dvfs cpu_cvb_dvfs_table[] = {
 			{1708500, { 3198504, -175931, 3576}, { 1400000,    0,    0} },
 			{1810500, { 3304747, -179126, 3576}, { 1400000,    0,    0} },
 			{1912500, { 3395401, -181606, 3576}, { 1400000,    0,    0} },
+			{2550000, { 3395401, -181606, 3576}, { 1400000,    0,    0} },
 			{      0, {       0,       0,    0}, {       0,    0,    0} },
 		},
 		.therm_trips_table = { 20, },
@@ -254,7 +255,7 @@ static struct cpu_cvb_dvfs cpu_cvb_dvfs_table[] = {
 			.tune_high_min_millivolts = 1050,
 			.min_millivolts = 1000,
 		},
-		.max_mv = 1320,
+		.max_mv = 1350, /* 1320, */
 		.freqs_mult = KHZ,
 		.speedo_scale = 100,
 		.voltage_scale = 1000,
