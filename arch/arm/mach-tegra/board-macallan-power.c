@@ -653,7 +653,7 @@ static struct tegra_cl_dvfs_cfg_param macallan_cl_dvfs_param = {
 #endif
 
 /* palmas: fixed 10mV steps from 600mV to 1400mV, with offset 0x10 */
-#define PMU_CPU_VDD_MAP_SIZE ((1400000 - 600000) / 10000 + 1)
+#define PMU_CPU_VDD_MAP_SIZE ((1450000 - 600000) / 10000 + 1)
 static struct voltage_reg_map pmu_cpu_vdd_map[PMU_CPU_VDD_MAP_SIZE];
 static inline void fill_reg_map(void)
 {
