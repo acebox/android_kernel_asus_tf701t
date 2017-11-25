@@ -20,6 +20,9 @@
 #include <linux/init.h>
 #include <linux/version.h>
 
+struct elevator_queue *elevator_alloc(struct request_queue *q,
+				  struct elevator_type *e); /* ace - prototype from elevator.c */
+
 enum { ASYNC, SYNC };
 
 /* Tunables */
@@ -242,23 +245,23 @@ sio_latter_request(struct request_queue *q, struct request *rq)
 	return list_entry(rq->queuelist.next, struct request, queuelist);
 }
 
-static int
-sio_init_queue(struct request_queue *q, struct elevator_type *e)
+static void // ace - test, "fixed" scheduler compatability was int, now void*
+*sio_init_queue(struct request_queue *q) // , struct elevator_type *e)
 {
 	struct sio_data *sd;
-	struct elevator_queue *eq;
+//	struct elevator_queue *eq;
 
-	eq = elevator_alloc(q, e);
-	if (!eq)
-		return -ENOMEM;
+//	eq = elevator_alloc(q, e);
+//	if (!eq)
+//		return NULL; // -ENOMEM; // ace - test, "fixed" scheduler compatability, return NULL
 
 	/* Allocate structure */
-	sd = kmalloc_node(sizeof(*sd), GFP_KERNEL, q->node);
+	sd = kmalloc_node(sizeof(*sd), GFP_KERNEL | __GFP_ZERO, q->node); // ace - test, "fixed" scheduler compatability, added | __GFP_ZERO
 	if (!sd) {
-		kobject_put(&eq->kobj);
-		return -ENOMEM;
+//		kobject_put(&eq->kobj);
+		return NULL; // -ENOMEM; // ace - test, "fixed" scheduler compatability, return NULL
 	}
-	eq->elevator_data = sd;
+//	eq->elevator_data = sd;
 
 	/* Initialize fifo lists */
 	INIT_LIST_HEAD(&sd->fifo_list[SYNC][READ]);
@@ -275,9 +278,9 @@ sio_init_queue(struct request_queue *q, struct elevator_type *e)
 	sd->fifo_batch = fifo_batch;
 
 	spin_lock_irq(q->queue_lock);
-	q->elevator = eq;
+//	q->elevator = eq;
 	spin_unlock_irq(q->queue_lock);
-	return 0;
+	return sd; // 0; ace - test, "fixed" scheduler compatability
 }
 
 static void

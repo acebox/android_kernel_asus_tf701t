@@ -60,6 +60,9 @@ static inline void blk_clear_rq_complete(struct request *rq)
  */
 #define ELV_ON_HASH(rq)		(!hlist_unhashed(&(rq)->hash))
 
+extern struct elevator_queue *elevator_alloc(struct request_queue *q,
+				  struct elevator_type *e); /* ace - prototyped here for other schedulers */
+
 void blk_insert_flush(struct request *rq);
 void blk_abort_flushes(struct request_queue *q);
 

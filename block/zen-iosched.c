@@ -14,6 +14,9 @@
 #include <linux/slab.h>
 #include <linux/init.h>
 
+struct elevator_queue *elevator_alloc(struct request_queue *q,
+				  struct elevator_type *e); /* ace - prototype from elevator.c */
+
 enum zen_data_dir { ASYNC, SYNC };
 
 static const int sync_expire  = 1000;    /* max time before a sync is submitted. */
@@ -156,21 +159,21 @@ static int zen_dispatch_requests(struct request_queue *q, int force)
 	return 1;
 }
 
-static int zen_init_queue(struct request_queue *q, struct elevator_type *e)
-{
+static void *zen_init_queue(struct request_queue *q) // , struct elevator_type *e)
+{ // ace - test, "fixed" scheduler compatability, change void to void*
 	struct zen_data *zdata;
-	struct elevator_queue *eq;
+//	struct elevator_queue *eq;
 
-	eq = elevator_alloc(q, e);
-	if (!eq)
-		return -ENOMEM;
+//	eq = elevator_alloc(q, e);
+//	if (!eq)
+//		return NULL; // -ENOMEM; // ace - test, "fixed" scheduler compatability, return NULL
 
-	zdata = kmalloc_node(sizeof(*zdata), GFP_KERNEL, q->node);
+	zdata = kmalloc_node(sizeof(*zdata), GFP_KERNEL | __GFP_ZERO, q->node); // ace - test, "fixed" scheduler compatability, added | __GFP_ZERO
 	if (!zdata) {
-		kobject_put(&eq->kobj);
-		return -ENOMEM;
+//		kobject_put(&eq->kobj);
+		return NULL; // -ENOMEM; // ace - test, "fixed" scheduler compatability, return NULL
 	}
-	eq->elevator_data = zdata;
+//	eq->elevator_data = zdata;
 
 	INIT_LIST_HEAD(&zdata->fifo_list[SYNC]);
 	INIT_LIST_HEAD(&zdata->fifo_list[ASYNC]);
@@ -179,9 +182,9 @@ static int zen_init_queue(struct request_queue *q, struct elevator_type *e)
 	zdata->fifo_batch = fifo_batch;
 
 	spin_lock_irq(q->queue_lock);
-	q->elevator = eq;
+//	q->elevator = eq;
 	spin_unlock_irq(q->queue_lock);
-	return 0;
+	return zdata; // 0; ace - test, "fixed" scheduler compatability
 }
 
 static void zen_exit_queue(struct elevator_queue *e)

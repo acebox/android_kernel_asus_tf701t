@@ -30,6 +30,9 @@
 
 #include <asm/div64.h>
 
+struct elevator_queue *elevator_alloc(struct request_queue *q,
+				  struct elevator_type *e); /* ace - prototype from elevator.c */
+
 enum vr_data_dir {
 	ASYNC,
 	SYNC,
@@ -319,21 +322,21 @@ vr_exit_queue(struct elevator_queue *e)
 /*
  * initialize elevator private data (vr_data).
  */
-static int vr_init_queue(struct request_queue *q, struct elevator_type *e)
-{
-	struct vr_data *vd;
-	struct elevator_queue *eq;
+static void *vr_init_queue(struct request_queue *q) // , struct elevator_type *e)
+{ // ace - test, "fixed" scheduler compatability, was int - now void*
+	struct vr_data *vd; // ace - vd no bueno, lol
+//	struct elevator_queue *eq;
 
-	eq = elevator_alloc(q, e);
-	if (!eq)
-		return -ENOMEM;
+//	eq = elevator_alloc(q, e);
+//	if (!eq)
+//		return NULL; // -ENOMEM; // ace - test, "fixed" scheduler compatability, return NULL
 
 	vd = kmalloc_node(sizeof(*vd), GFP_KERNEL | __GFP_ZERO, q->node);
 	if (!vd) {
-		kobject_put(&eq->kobj);
-		return -ENOMEM;
+//		kobject_put(&eq->kobj);
+		return NULL; // -ENOMEM;  // ace - test, "fixed" scheduler compatability, just return
 	}
-	eq->elevator_data = vd;
+//	eq->elevator_data = vd;
 
 	INIT_LIST_HEAD(&vd->fifo_list[SYNC]);
 	INIT_LIST_HEAD(&vd->fifo_list[ASYNC]);
@@ -344,9 +347,9 @@ static int vr_init_queue(struct request_queue *q, struct elevator_type *e)
 	vd->rev_penalty = rev_penalty;
 
 	spin_lock_irq(q->queue_lock);
-	q->elevator = eq;
+//	q->elevator = eq;
 	spin_unlock_irq(q->queue_lock);
-	return 0;
+	return vd; // ace - test, "fixed" scheduler compatability
 }
 
 /*
