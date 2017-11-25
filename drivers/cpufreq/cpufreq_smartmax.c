@@ -305,7 +305,7 @@ static inline unsigned int get_timer_delay(void) {
 static inline void dbs_timer_init(struct smartmax_info_s *this_smartmax) {
 	int delay = get_timer_delay();
 
-	INIT_DELAYED_WORK_DEFERRABLE(&this_smartmax->work, do_dbs_timer); // ace - changed from INIT_DEFERRABLE_WORK to INIT_DELAYED_WORK_DEFERRABLE
+	INIT_DELAYED_WORK_DEFERRABLE(&this_smartmax->work, do_dbs_timer);
 	schedule_delayed_work_on(this_smartmax->cpu, &this_smartmax->work, delay);
 }
 
@@ -478,7 +478,7 @@ static void cpufreq_smartmax_timer(struct smartmax_info_s *this_smartmax) {
 
 		j_this_smartmax = &per_cpu(smartmax_info, j);
 
-		cur_idle_time = get_cpu_idle_time(j, &cur_wall_time); // , io_is_busy);
+		cur_idle_time = get_cpu_idle_time(j, &cur_wall_time);
 		cur_iowait_time = get_cpu_iowait_time(j, &cur_wall_time);
 
 		wall_time = cur_wall_time - j_this_smartmax->prev_cpu_wall;
@@ -590,7 +590,7 @@ static void update_idle_time(bool online) {
 		j_this_smartmax = &per_cpu(smartmax_info, j);
 
 		j_this_smartmax->prev_cpu_idle = get_cpu_idle_time(j,
-				&j_this_smartmax->prev_cpu_wall); // , io_is_busy);
+				&j_this_smartmax->prev_cpu_wall);
 		if (ignore_nice)
 			j_this_smartmax->prev_cpu_nice = kcpustat_cpu(j).cpustat[CPUTIME_NICE];
 
@@ -1017,7 +1017,7 @@ static int cpufreq_smartmax_boost_task(void *data) {
 			dprintk(SMARTMAX_DEBUG_BOOST, "%s %llu %llu\n", __func__, now, boost_end_time);
 
 			target_freq(policy, this_smartmax, cur_boost_freq, this_smartmax->old_freq, CPUFREQ_RELATION_H);
-			this_smartmax->prev_cpu_idle = get_cpu_idle_time(0, &this_smartmax->prev_cpu_wall); // , io_is_busy);
+			this_smartmax->prev_cpu_idle = get_cpu_idle_time(0, &this_smartmax->prev_cpu_wall);
 		}
 		mutex_unlock(&this_smartmax->timer_mutex);
         
