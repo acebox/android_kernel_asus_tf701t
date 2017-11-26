@@ -152,19 +152,9 @@ static void to_state_clockgated_locked(struct platform_device *dev)
 			&& pdata->can_powergate) {
 		do_unpowergate_locked(pdata->powergate_ids[0]);
 		do_unpowergate_locked(pdata->powergate_ids[1]);
-// ace - video: tegra: host: Do not reset MC on powerup_reset (Matt Wagner/Mandar Padmawar) commit e9d814ed83329fe74bc11c600a479a5190bf6fc5
-		if (pdata->powerup_reset) 
-		{
-			if (pdata->clocks[0].reset)
-				tegra_periph_reset_assert(pdata->clk[0]);
-			if (pdata->clocks[1].reset)
-				tegra_periph_reset_assert(pdata->clk[1]);
-			udelay(POWERGATE_DELAY);
-			if (pdata->clocks[0].reset)
-				tegra_periph_reset_deassert(pdata->clk[0]);
-			if (pdata->clocks[1].reset)
-				tegra_periph_reset_deassert(pdata->clk[1]);
-		}
+
+		if (pdata->powerup_reset)
+			do_module_reset_locked(dev);
 	}
 	pdata->powerstate = NVHOST_POWER_STATE_CLOCKGATED;
 }
