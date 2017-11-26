@@ -340,6 +340,7 @@ void blk_insert_flush(struct request *rq)
 	memset(&rq->flush, 0, sizeof(rq->flush));
 	INIT_LIST_HEAD(&rq->flush.list);
 	rq->cmd_flags |= REQ_FLUSH_SEQ;
+
 	rq->flush.saved_end_io = rq->end_io; /* Usually NULL */
 	rq->end_io = flush_data_end_io;
 
