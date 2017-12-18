@@ -153,8 +153,9 @@ static void to_state_clockgated_locked(struct platform_device *dev)
 		do_unpowergate_locked(pdata->powergate_ids[0]);
 		do_unpowergate_locked(pdata->powergate_ids[1]);
 
-		if (pdata->powerup_reset)
-			do_module_reset_locked(dev);
+		if (pdata->powerup_reset) {
+			do_module_reset_locked(dev);	
+		}
 	}
 	pdata->powerstate = NVHOST_POWER_STATE_CLOCKGATED;
 }

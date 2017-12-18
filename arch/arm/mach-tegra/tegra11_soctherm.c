@@ -447,9 +447,9 @@ static const void __iomem *clk_reset_base = IO_ADDRESS(TEGRA_CLK_RESET_BASE);
 
 #define pmc_writel(value, reg) __raw_writel(value, (u32)pmc_base + (reg))
 #define pmc_readl(reg) __raw_readl((u32)pmc_base + (reg))
-
+// ace - soctherm_suspended defined default 1 as return
 #define soctherm_writel(value, reg)	\
-	(soctherm_suspended ?:		\
+	(soctherm_suspended ? 1 :		\
 		__raw_writel(value, (u32)reg_soctherm_base + (reg)))
 #define soctherm_readl(reg)		\
 	(soctherm_suspended ? 0 :	\
@@ -1771,12 +1771,12 @@ static int soctherm_init_platform_data(void)
 		therm = &plat_data.therm[tsensor2therm_map[i]];
 		s = &plat_data.sensor_data[i];
 		s->sensor_enable = s->zone_enable;
-		s->sensor_enable = s->sensor_enable ?: therm->zone_enable;
-		s->tall      = s->tall      ?: sensor_defaults.tall;
-		s->tiddq     = s->tiddq     ?: sensor_defaults.tiddq;
-		s->ten_count = s->ten_count ?: sensor_defaults.ten_count;
-		s->tsample   = s->tsample   ?: sensor_defaults.tsample;
-		s->pdiv      = s->pdiv      ?: sensor_defaults.pdiv;
+		s->sensor_enable = s->sensor_enable ? 1 : therm->zone_enable; // ace - made all these return 1 (true) default, quiet the compiler..
+		s->tall      = s->tall      ? 1 : sensor_defaults.tall;
+		s->tiddq     = s->tiddq     ? 1 : sensor_defaults.tiddq;
+		s->ten_count = s->ten_count ? 1 : sensor_defaults.ten_count;
+		s->tsample   = s->tsample   ? 1 : sensor_defaults.tsample;
+		s->pdiv      = s->pdiv      ? 1 : sensor_defaults.pdiv;
 	}
 
 	/* Pdiv */

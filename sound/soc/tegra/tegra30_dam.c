@@ -1087,7 +1087,9 @@ static int __devinit tegra30_dam_probe(struct platform_device *pdev)
 	for (i = 0; i <= TEGRA30_DAM_CTRL_REGINDEX; i++) {
 		if ((i == TEGRA30_DAM_CTRL_RSVD_6) ||
 			(i == TEGRA30_DAM_CTRL_RSVD_10))
-			continue;
+			{
+				continue;
+			}
 
 			dam->reg_cache[i] =
 				tegra30_dam_readl(dam, i << 2);
