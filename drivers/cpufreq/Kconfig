@@ -127,6 +127,49 @@ config CPU_FREQ_DEFAULT_GOV_LIONHEART
 	help
 	  Use the CPUFreq governor 'lionheart' as default.
 
+config CPU_FREQ_DEFAULT_GOV_ELEMENTALX
+	bool "elementalx"
+	select CPU_FREQ_GOV_ELEMENTALX
+	select CPU_FREQ_GOV_PERFORMANCE
+	help
+	  Use the CPUFreq governor 'elementalx' as default.
+
+config CPU_FREQ_DEFAULT_GOV_ALUCARD
+	bool "alucard"
+	select CPU_FREQ_GOV_ALUCARD
+	help
+	  Use the CPUFreq governor 'alucard' as default.
+
+config CPU_FREQ_DEFAULT_GOV_ABYSSPLUGV2
+	bool "abyssplugv2"
+	select CPU_FREQ_GOV_ABYSSPLUGV2
+	help
+	  Use the CPUFreq governor 'abyssplugv2' as default.
+
+config CPU_FREQ_DEFAULT_GOV_BIOSHOCK
+	bool "bioshock"
+	select CPU_FREQ_GOV_BIOSHOCK
+	help
+	  Use the CPUFreq governor 'bioshock' as default.
+
+config CPU_FREQ_DEFAULT_GOV_INTELLIDEMAND
+	bool "intellidemand"
+	select CPU_FREQ_GOV_INTELLIDEMAND
+	help
+	  Use the CPUFreq governor 'intellidemand' as default.
+
+config CPU_FREQ_DEFAULT_GOV_LULZACTIVE
+	bool "lulzactive"
+	select CPU_FREQ_GOV_LULZACTIVE
+	help
+	  Use the CPUFreq governor 'lulzactive' as default.
+
+config CPU_FREQ_DEFAULT_GOV_SMARTASS2
+	bool "smartass2"
+	select CPU_FREQ_GOV_SMARTASS2
+	help
+	  Use the CPUFreq governor 'smartass2' as default.
+
 config CPU_FREQ_DEFAULT_GOV_SMARTMAX
 	bool "smartmax"
 	select CPU_FREQ_GOV_SMARTMAX
@@ -247,16 +290,67 @@ config CPU_FREQ_GOV_LIONHEART
 
 	  If in doubt, say N.
 
+config CPU_FREQ_GOV_ELEMENTALX
+	tristate "'elementalx' cpufreq policy governor"
+	select CPU_FREQ_TABLE
+	help
+	  'elementalx' - toggle governor.
+
+	  If in doubt, say N.
+
 config CPU_FREQ_GOV_SMARTMAX
 	tristate "'smartmax' cpufreq governor"
 	depends on CPU_FREQ
 	help
-	  smartmax' - Smartmax is a mix between ondemand and smartassv2. It behaves
-	  mostly like smartass with the concept of an "ideal" frequency. By default
-	  this is configured for battery saving, so this is NOT a gaming or benchmark
-	  governor! Additionally, to make it "snappy", smartmax has "touch poke".
-	  So input events from the touchscreen will boost the cpu for a specific time
-	  to a specific frequency. Developed by XDA user Maxwen.
+	  'elementalx' - toggle governor.
+
+	  If in doubt, say N.
+
+config CPU_FREQ_GOV_ALUCARD
+	tristate "'alucard' cpufreq governor"
+	depends on CPU_FREQ
+	help
+	  'alucard' - toggle governor.
+
+	  If in doubt, say N.
+
+config CPU_FREQ_GOV_ABYSSPLUGV2
+	tristate "'abyssplugv2' cpufreq governor"
+	depends on CPU_FREQ
+	help
+	  'abyssplugv2' - toggle governor.
+
+	  If in doubt, say N.
+
+config CPU_FREQ_GOV_BIOSHOCK
+	tristate "'bioshock' cpufreq governor"
+	depends on CPU_FREQ
+	help
+	  'bioshock' - toggle governor.
+
+	  If in doubt, say N.
+
+config CPU_FREQ_GOV_INTELLIDEMAND
+	tristate "'intellidemand' cpufreq governor"
+	depends on CPU_FREQ
+	help
+	  'intellidemand' - toggle governor.
+
+	  If in doubt, say N.
+
+config CPU_FREQ_GOV_LULZACTIVE
+	tristate "'lulzactive' cpufreq governor"
+	depends on CPU_FREQ
+	help
+	  'lulzactive' - toggle governor.
+
+	  If in doubt, say N.
+
+config CPU_FREQ_GOV_SMARTASS2
+	tristate "'smartass2' cpufreq governor"
+	depends on CPU_FREQ
+	help
+	  'smartass2' - toggle governor.
 
 	  If in doubt, say N.
 
