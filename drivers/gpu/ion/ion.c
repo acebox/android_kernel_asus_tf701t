@@ -264,7 +264,7 @@ static void ion_buffer_remove_from_handle(struct ion_buffer *buffer)
 	mutex_unlock(&buffer->dev->lock);
 }
 
-static struct ion_handle *ion_handle_create(struct ion_client *client,
+/* static */ struct ion_handle *ion_handle_create(struct ion_client *client,
 				     struct ion_buffer *buffer)
 {
 	struct ion_handle *handle;
@@ -347,7 +347,7 @@ bool ion_handle_validate(struct ion_client *client, struct ion_handle *handle)
 		else
 			return true;
 	}
-	WARN(1, "invalid handle passed h=0x%x,comm=%d\n", handle,
+	WARN(1, "invalid handle passed h=0x%x,comm=%s\n", (int)handle,
 		current->group_leader->comm);
 	return false;
 }
@@ -591,7 +591,7 @@ int ion_remap_dma(struct ion_client *client,
 	buffer = handle->buffer;
 	mutex_lock(&buffer->lock);
 
-	ret = iommu_heap_remap_dma(buffer->heap, buffer, addr);
+	ret = (int)iommu_heap_remap_dma(buffer->heap, buffer, addr);
 
 	mutex_unlock(&buffer->lock);
 	mutex_unlock(&client->lock);

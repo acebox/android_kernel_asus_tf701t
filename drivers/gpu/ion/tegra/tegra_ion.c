@@ -124,7 +124,7 @@ static int tegra_ion_alloc_from_id(struct ion_client *client,
 	if (copy_from_user(&data, (void __user *)arg, sizeof(data)))
 		return -EFAULT;
 	buffer = (struct ion_buffer *)data.id;
-	data.handle = ion_import(client, buffer);
+	data.handle = (int)ion_import(client, buffer);
 	data.size = buffer->size;
 	if (put_user(data.handle, &user_data->handle))
 		return -EFAULT;
